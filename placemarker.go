@@ -7,20 +7,31 @@ import (
 	"github.com/twpayne/go-kml"
 )
 
-func AddPoint(k *kml.CompoundElement, name, desc string, alt, lat, lon float64) {
-	k.Add(
-		kml.Placemark(
-			kml.Name(name),
-			kml.Description(desc),
-			kml.Point(
-				kml.Coordinates(
-					kml.Coordinate{
-						Lon: lon,
-						Lat: lat,
-						Alt: alt,
-					}),
-			),
-		))
+func AddPoint(
+	k *kml.CompoundElement,
+	name string,
+	lon, lat, alt float64) *kml.CompoundElement {
+
+	p := kml.Placemark(
+		kml.Name(name),
+		// kml.Description(description),
+		kml.Point(
+			kml.Coordinates(
+				kml.Coordinate{
+					Lon: lon,
+					Lat: lat,
+					Alt: alt,
+				}),
+		),
+	)
+
+	if k == nil {
+		k = kml.KML(p)
+	} else {
+		k.Add(p)
+	}
+
+	return k
 }
 
 func WriteKML(k *kml.CompoundElement, path string) error {

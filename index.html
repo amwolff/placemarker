@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Placemarker</title>
+
+    <script>
+        let longitude, latitude, altitude;
+
+        function geoFindMe() {
+            const status = document.querySelector('#status-find');
+
+            function success(position) {
+                const lon = position.coords.longitude;
+                const lat = position.coords.latitude;
+                const alt = position.coords.altitude;
+
+                status.textContent = position.coords.toString();
+
+                longitude = lon;
+                latitude = lat;
+                altitude = alt;
+            }
+
+            function error() {
+                status.textContent = 'Unable to retrieve your location';
+            }
+
+            if (!navigator.geolocation) {
+                status.textContent = 'Geolocation is not supported by your browser';
+            } else {
+                status.textContent = 'Locating…';
+                navigator.geolocation.getCurrentPosition(success, error);
+            }
+        }
+
+        function geoSendMe() {
+        }
+
+        document.querySelector('#find-me').addEventListener('click', geoFindMe);
+        document.querySelector('#send-me').addEventListener('click', geoFindMe);
+    </script>
+</head>
+<body>
+<button id="find-me">Find me</button>
+<br>
+<p id="status-find"></p>
+<br>
+<button id="send-me">Send data</button>
+<br>
+<p id="status-send"></p>
+</body>
+</html>
